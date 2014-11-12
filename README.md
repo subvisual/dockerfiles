@@ -4,9 +4,9 @@ A set of demos using Docker and Vagrant for deploying web apps
 
 ## Container list
 
-* [nginx](docker/nginx) nginx serving a static HTML page
-* [rails](docker/rails) Rails app served via nginx with a PostgreSQL DB
-* [postgres](docker/postgres) PostgreSQL database (to be used together with the rails container)
+* [**nginx**](docker/nginx): [DONE] web server for a static HTML page
+* [**rails**](docker/rails): [WIP] web app served via nginx with a PostgreSQL DB
+* [**postgres**](docker/postgres): [WIP] A postgreSQL database (to be used together with the rails container)
 
 ## References
 
