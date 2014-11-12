@@ -7,16 +7,20 @@ ENV HOME /root
 RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 CMD ["/sbin/my_init"]
 
-# repository update
-RUN apt-get -y update
+# nginx
+RUN add-apt-repository -y ppa:nginx/stable
+RUN apt-get update
+RUN apt-get install -y nginx
+RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+RUN rm /etc/nginx/sites-enabled/default
+RUN chown -R www-data:www-data /var/lib/nginx
+
+# rbenv dependencies
 RUN apt-get install -y -q python-software-properties
 RUN add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
 RUN apt-get -y update
-
-# some base dependencies
 RUN apt-get install -y build-essential curl git
 RUN apt-get install -y zlib1g-dev libssl-dev libreadline-dev libyaml-dev libxml2-dev libxslt-dev
-RUN apt-get clean
 
 # rbenv
 RUN git clone https://github.com/sstephenson/rbenv.git /root/.rbenv
@@ -31,12 +35,6 @@ RUN echo 'gem: --no-ri --no-rdoc' >> /.gemrc
 RUN rbenv install 2.1.3
 RUN rbenv global  2.1.3
 RUN gem install bundler rubygems-bundler
-
-# node.js
-RUN apt-get install -y nodejs npm
-
-# postgres client
-RUN apt-get install -y -q postgresql-client
 
 # final cleanup
 # as specified here: https://github.com/phusion/baseimage-docker#using
