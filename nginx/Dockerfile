@@ -12,6 +12,7 @@ RUN add-apt-repository -y ppa:nginx/stable
 RUN apt-get update
 RUN apt-get install -y nginx
 RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+RUN rm -f /etc/nginx/sites-enabled/default
 RUN chown -R www-data:www-data /var/lib/nginx
 
 # adds nginx to runit, disabled by default
