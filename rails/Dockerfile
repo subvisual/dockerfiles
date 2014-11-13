@@ -1,22 +1,13 @@
-FROM phusion/baseimage:0.9.15
+FROM naps62/nginx:latest
 MAINTAINER naps62 <mpalhas@gmail.com>
 
-# steps required for phusino/baseimage setup
-# as specified here: https://github.com/phusion/baseimage-docker#using
-ENV HOME /root
-RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
-CMD ["/sbin/my_init"]
+# enable nginx runit services
+RUN rm -f /etc/service/nginx/down
+RUN rm -f /etc/service/nginx-log-forwarder/down
 
-# nginx
-RUN add-apt-repository -y ppa:nginx/stable
-RUN apt-get update
-RUN apt-get install -y nginx
-RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
-RUN rm /etc/nginx/sites-enabled/default
-RUN chown -R www-data:www-data /var/lib/nginx
+ADD test-app.nginx.conf /etc/nginx/sites-enabled/default
 
 # rbenv dependencies
-RUN apt-get install -y -q python-software-properties
 RUN add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
 RUN apt-get -y update
 RUN apt-get install -y build-essential curl git
@@ -36,6 +27,23 @@ RUN rbenv install 2.1.3
 RUN rbenv global  2.1.3
 RUN gem install bundler rubygems-bundler
 
+# node.js
+RUN apt-get install -y nodejs npm
+
+# pre bundle
+WORKDIR /tmp
+ADD test-app/Gemfile /tmp/
+ADD test-app/Gemfile.lock /tmp/
+RUN bundle install
+
 # final cleanup
 # as specified here: https://github.com/phusion/baseimage-docker#using
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# add rails app
+ENV PORT 3000
+ENV RAILS_ENV production
+ADD test-app /var/www/test-app
+
+WORKDIR /var/www/test-app
+CMD ["bundle", "exec", "foreman", "start"]
