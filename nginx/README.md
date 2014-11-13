@@ -1,4 +1,13 @@
-# Using this container
+# nginx docker image
+
+This image sets up nginx on top of phusion/baseimage
+
+## What's included:
+
+* nginx is installed and setup via [runit](http://smarden.org/runit/), but disabled by default
+* nginx-log-forwarder to forward nginx error log to docker logs
+* permissions set up to receive apps to `/var/www`
+* ports 80 and 443 exposed
 
 Dockerfile:
 
