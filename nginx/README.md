@@ -1,5 +1,24 @@
-# Testing this container
+# Using this container
 
-    docker pull naps62/demo-nginx
-    # wait
-    docker run --name demo-nginx -p 80:80 -i -t naps62/demo-nginx
+Dockerfile:
+
+    FROM naps62/nginx:latest
+
+    # install app
+    ADD test-app.conf /etc/nginx/sites-enabled/default
+    ADD ./test-app /var/www/test-app
+
+app.conf:
+
+    server {
+      listen 80;
+      listen [::]:80;
+
+      root /var/www/test-app;
+      index index.html;
+
+      location / {
+        try_files $uri $uri/ =404;
+      }
+
+    }

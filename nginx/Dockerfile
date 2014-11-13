@@ -14,16 +14,20 @@ RUN apt-get install -y nginx
 RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
 RUN chown -R www-data:www-data /var/lib/nginx
 
+# adds nginx to runit, disabled by default
+RUN mkdir /etc/service/nginx
+RUN mkdir /etc/service/nginx-log-forwarder
+ADD runit/nginx /etc/service/nginx/run
+ADD runit/nginx-log-forwarder /etc/service/nginx-log-forwarder/run
+RUN touch /etc/service/nginx/down
+RUN touch /etc/service/nginx-log-forwarder/down
+
 # final cleanup after package installation
 # as specified here: https://github.com/phusion/baseimage-docker#using
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # configure nginx
 VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx"]
-
-# install app
-ADD test.conf /etc/nginx/sites-enabled/default
-ADD ./test-app /var/www/test-app
 
 EXPOSE 80 443
 CMD ["nginx"]
