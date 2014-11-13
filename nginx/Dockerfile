@@ -12,7 +12,6 @@ RUN add-apt-repository -y ppa:nginx/stable
 RUN apt-get update
 RUN apt-get install -y nginx
 RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
-RUN rm /etc/nginx/sites-enabled/default
 RUN chown -R www-data:www-data /var/lib/nginx
 
 # final cleanup after package installation
@@ -23,7 +22,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx"]
 
 # install app
-ADD test.conf /etc/nginx/sites-enabled/
+ADD test.conf /etc/nginx/sites-enabled/default
 ADD ./test-app /var/www/test-app
 
 EXPOSE 80 443
