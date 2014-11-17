@@ -1,0 +1,16 @@
+default: &default
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  encoding: unicode
+  username: <%= ENV['DB_ENV_POSTGRESQL_USER'] %>
+  password: <%= ENV['DB_ENV_POSTGRESQL_PASS'] %>
+  host: <%= ENV['DB_PORT_5432_TCP_ADDR'] %>
+
+development:
+  <<: *default
+  database: rails_test_development
+
+test:
+  <<: *default
+  database: rails_test_test
