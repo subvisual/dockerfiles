@@ -9,7 +9,7 @@ RUN rm -f /etc/service/nginx-log-forwarder/down
 RUN add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
 RUN apt-get -y update
 RUN apt-get install -y build-essential curl git
-RUN apt-get install -y zlib1g-dev libssl-dev libreadline-dev libyaml-dev libxml2-dev libxslt-dev
+RUN apt-get install -y zlib1g-dev libssl-dev libreadline-dev libyaml-dev libxml2-dev libxslt-dev libpq-dev
 
 # rbenv
 RUN git clone https://github.com/sstephenson/rbenv.git /root/.rbenv
