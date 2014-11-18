@@ -11,8 +11,12 @@ RUN bundle install
 
 RUN rm -rf /tmp/*
 
-ADD . /var/www/test-app
-ADD config/nginx.conf /etc/nginx/sites-enabled/test-app.conf
 ENV RAILS_ENV production
 ENV APP_NAME test-app
 WORKDIR /var/www/test-app
+
+CMD ["bundle", "exec", "foreman", "start"]
+
+ADD config/nginx.conf /etc/nginx/sites-enabled/test-app.conf
+ADD . /var/www/test-app
+RUN bundle exec rake assets:precompile
