@@ -17,14 +17,15 @@ docker start postgres
 docker start rails
 START
 
+
 Vagrant.configure("2") do |config|
-  config.vm.box = "trusty64"
+  config.vm.box = "hashicorp/precise64"
 
   # must use nfs for this otherwise rails performance will be awful
-  config.vm.synced_folder ".", "/app", type: "nfs"
+  # config.vm.synced_folder ".", "/app"
 
   # rails server port forwarding
-  config.vm.network :forwarded_port, host: 8888, guest: 8888
+  config.vm.network :forwarded_port, host: 3000, guest: 3000
 
   # need a private network for NFS shares to work
   config.vm.network :private_network, ip: '192.168.50.4'
@@ -32,9 +33,9 @@ Vagrant.configure("2") do |config|
   # install latest docker
   config.vm.provision "docker"
 
-  # setup the containers when the VM is first created
-  config.vm.provision "shell", inline: $setup
+  # # setup the containers when the VM is first created
+  # config.vm.provision "shell", inline: $setup
 
-  # make sure the correct containers are running every time we start the VM
-  config.vm.provision "shell", inline: $start, run: "always"
+  # # make sure the correct containers are running every time we start the VM
+  # config.vm.provision "shell", inline: $start, run: "always"
 end

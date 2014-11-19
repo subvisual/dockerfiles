@@ -1,15 +1,46 @@
-# Docker demos
+# Base Docker images
 
-A set of demos using Docker and Vagrant for deploying web apps
+A set of Docker images to unify our development setup and deployment process.
 
-## Container list
+# Development images
 
-* [**nginx**](docker/nginx): [DONE] web server for a static HTML page
-* [**rails**](docker/rails): [WIP] web app served via nginx with a PostgreSQL DB
-* [**postgres**](docker/postgres): [WIP] A postgreSQL database (to be used together with the rails container)
+All images prefixed with `dev-` are intended for development purposes only. Do
+not rely on these images for production environments, as they are not secure.
 
-## References
+These are intended to be used with [fig](http://www.fig.sh/).
 
-* [Docker Explained: How To Containerize and Use Nginx as a Proxy](https://www.digitalocean.com/community/tutorials/docker-explained-how-to-containerize-and-use-nginx-as-a-proxy)
-* [A Rails Development Environment with Docker and Vagrant](http://www.talkingquickly.co.uk/2014/06/rails-development-environment-with-vagrant-and-docker/)
-* [Rails Development Using Docker and Vagrant](https://blog.abevoelker.com/rails-development-using-docker-and-vagrant/)
+* [Ruby 2.1.5](dev/ruby-2.1.5)
+* [Postgres 9.3](dev/postgres-9.3)
+
+## Usage example
+
+See [this example](test) for a real-life example of the explanation given in
+this section.
+
+In this example, we're development a Rails app with a PostgreSQL database.
+For this the images `groupbuddies/dev-ruby:2.1.5` and
+`groupbuddies/dev-postgres:9.3` will be used.
+
+    web:
+      image: groupbuddies/dev-ruby:2.1.5
+      volumes:
+        - .:/usr/src/app
+      ports:
+        - 3000:3000
+      links:
+        - db
+    db:
+      image: groupbuddies/dev-postgres:9.3
+      volumes:
+        - "~/.docker-volumes/APP_NAME/db/:/var/lib/postgresql/data/"
+      expose:
+        - 5432
+
+Your app should use `foreman` to manage it's processes, so your `Procfile`
+could look like the following (assuming the Rails app is served with [puma](https://github.com/puma/puma)):
+
+    web: PORT=3000 bundle exec puma -C config/puma.rb
+
+`PORT=3000` is required to make sure puma uses the same port that's
+specified in `fig.yml`. Otherwise it would just default to the port given by
+foreman.
