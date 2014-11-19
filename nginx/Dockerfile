@@ -20,8 +20,6 @@ RUN mkdir /etc/service/nginx
 RUN mkdir /etc/service/nginx-log-forwarder
 ADD runit/nginx /etc/service/nginx/run
 ADD runit/nginx-log-forwarder /etc/service/nginx-log-forwarder/run
-RUN touch /etc/service/nginx/down
-RUN touch /etc/service/nginx-log-forwarder/down
 
 # final cleanup after package installation
 # as specified here: https://github.com/phusion/baseimage-docker#using
