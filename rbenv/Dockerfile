@@ -1,5 +1,5 @@
-FROM naps62/nginx:latest
-MAINTAINER naps62 <mpalhas@gmail.com>
+FROM groupbuddies/nginx:latest
+MAINTAINER naps62 <mpalhas@groupbuddies.com>
 
 # enable nginx runit services
 RUN rm -f /etc/service/nginx/down
