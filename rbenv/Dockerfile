@@ -1,10 +1,6 @@
 FROM groupbuddies/nginx:latest
 MAINTAINER naps62 <mpalhas@groupbuddies.com>
 
-# enable nginx runit services
-RUN rm -f /etc/service/nginx/down
-RUN rm -f /etc/service/nginx-log-forwarder/down
-
 # rbenv dependencies
 RUN add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
 RUN apt-get -y update
