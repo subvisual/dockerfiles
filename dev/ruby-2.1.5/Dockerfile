@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y postgresql-client --no-install-recommen
 
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
+VOLUME ["/usr/local/bundle"]
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
