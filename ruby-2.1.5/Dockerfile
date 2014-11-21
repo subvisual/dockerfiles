@@ -1,7 +1,7 @@
 FROM groupbuddies/nginx:latest
 MAINTAINER naps62 <mpalhas@groupbuddies.com>
 
-RUN apt-get update && apt-get install -y build-essential libssl-dev git-core curl
+RUN apt-get update && apt-get install -y build-essential libssl-dev git-core curl postgresql-client \
   && rm -rf /var/lib/apt/lists/*
 
 ENV RUBY_MAJOR 2.1
