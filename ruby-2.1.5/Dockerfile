@@ -26,14 +26,6 @@ RUN gem install bundler \
 # don't create ".bundle" in all our apps
 ENV BUNDLE_APP_CONFIG $GEM_HOME
 
-#
-# pre bundle
-#
-ONBUILD ADD Gemfile /tmp/
-ONBUILD ADD Gemfile.lock /tmp/
-ONBUILD RUN cd /tmp && bundle install
-ONBUILD RUN rm -rf /tmp/*
-
 # install
 ONBUILD COPY . /var/www/app
 CMD ["bundle", "exec", "foreman", "start"]
