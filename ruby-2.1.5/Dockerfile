@@ -26,6 +26,4 @@ RUN gem install bundler \
 # don't create ".bundle" in all our apps
 ENV BUNDLE_APP_CONFIG $GEM_HOME
 
-# install
-ONBUILD COPY . /var/www/app
-CMD ["bundle", "exec", "foreman", "start"]
+WORKDIR /usr/src/app
