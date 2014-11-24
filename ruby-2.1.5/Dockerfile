@@ -23,7 +23,4 @@ RUN gem install bundler \
         && bundle config --global path "$GEM_HOME" \
         && bundle config --global bin "$GEM_HOME/bin"
 
-# don't create ".bundle" in all our apps
-ENV BUNDLE_APP_CONFIG $GEM_HOME
-
 WORKDIR /usr/src/app
