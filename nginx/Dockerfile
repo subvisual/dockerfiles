@@ -9,7 +9,7 @@ CMD ["/sbin/my_init"]
 
 # nginx
 RUN apt-get update \
-    && apt-get install nginx-extras \
+    && apt-get -y install nginx-extras \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
